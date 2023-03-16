@@ -2,6 +2,7 @@ package com.ojcarlos.springmongo.config;
 
 import com.ojcarlos.springmongo.domain.Post;
 import com.ojcarlos.springmongo.domain.User;
+import com.ojcarlos.springmongo.dto.AuthorDto;
 import com.ojcarlos.springmongo.repository.PostRepository;
 import com.ojcarlos.springmongo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,18 +27,21 @@ public class Instantiation implements CommandLineRunner {
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
 
         userRepository.deleteAll();
+        postRepository.deleteAll();
         User maria = new User(null, "Maria Brown", "maria@gmail.com");
         User alex = new User(null, "Alex Green", "alex@gmail.com");
         User bob = new User(null, "Bob Grey", "bob@gmail.com");
 
-        Post p1 = new Post(null, sdf.parse("21/03/2021"), "Partiu viagem!", "Vou viajar para São Paulo. Abraços!", maria);
+        userRepository.saveAll(Arrays.asList(maria, alex, bob));
 
-        Post p2 = new Post(null, sdf.parse("23/03/2021"), "Bom dia!", "Acordei feliz", maria);
+        Post p1 = new Post(null, sdf.parse("21/03/2021"), "Partiu viagem!", "Vou viajar para São Paulo. Abraços!", new AuthorDto(maria));
+
+        Post p2 = new Post(null, sdf.parse("23/03/2021"), "Bom dia!", "Acordei feliz", new AuthorDto(maria));
 
         postRepository.saveAll(Arrays.asList(p1,p2));
 
 
-        userRepository.saveAll(Arrays.asList(maria, alex, bob));
+
 
 
     }
